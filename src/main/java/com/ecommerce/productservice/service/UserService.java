@@ -1,26 +1,52 @@
 package com.ecommerce.productservice.service;
 
+import com.ecommerce.productservice.models.Instructor;
 import com.ecommerce.productservice.models.User;
+import com.ecommerce.productservice.repository.InstructorRepository;
 import com.ecommerce.productservice.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final InstructorRepository instructorRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, InstructorRepository instructorRepository) {
         this.userRepository = userRepository;
+        this.instructorRepository = instructorRepository;
     }
+
     public User createUser(String name,String email){
         User user = new User();
         user.setName(name);
         user.setEmail(email);
-        return userRepository.save(user);
+        userRepository.save(user);
+        return user;
 
     }
 
-    public User getUserByName(String Name){
-        return userRepository.findByName(Name).get();
+    public Instructor createInstructor(String name,String email){
+        Instructor instructor = new Instructor();
+        instructor.setName(name);
+        instructor.setEmail(email);
+        instructor.setSalary(20000.0);
+        instructor.setSkill("Backend");
+
+        instructorRepository.save(instructor);
+        return instructor;
+
     }
+
+   public List<User> getUserByName(String Name){
+       return userRepository.findByName(Name);
+   }
+
+    public List<Instructor> getInstructorByName(String Name){
+        return instructorRepository.findByName(Name);
+    }
+
+
 }
