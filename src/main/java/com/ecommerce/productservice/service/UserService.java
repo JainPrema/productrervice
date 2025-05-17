@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -48,6 +49,24 @@ public class UserService {
    public List<User> getUserByName(String Name){
        return userRepository.findByName(Name);
    }
+
+    public List<GetInstructorDto> getInstructorByIds(List<UUID> uuid){
+        List<Instructor> instructors = instructorRepository.findAllById(uuid);
+
+        List<GetInstructorDto> instructorDtos = new ArrayList<>();
+        for(Instructor instructor:instructors){
+            GetInstructorDto getInstructorDto = new GetInstructorDto();
+            getInstructorDto.setId(instructor.getId());
+            getInstructorDto.setName(instructor.getName());
+            getInstructorDto.setEmail(instructor.getEmail());
+
+            instructorDtos.add(getInstructorDto);
+
+        }
+        return instructorDtos;
+    }
+
+
 
     public List<GetInstructorDto> getInstructorByName(String Name){
         List<Instructor> instructors = instructorRepository.findByName(Name);
